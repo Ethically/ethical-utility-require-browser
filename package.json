@@ -1,0 +1,28 @@
+{
+  "name": "ethical-utility-require-browser",
+  "version": "0.0.0",
+  "description": "CommonJS browser module system for the Ethical framework.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "scripts": {
+    "test": "nutra --config ./nutra.config.js && npm run prepublish",
+    "test-debugger": "DEBUG=1 node --inspect-brk ./node_modules/.bin/nutra --config ./nutra.config.js",
+    "build": "npm run build-node && node transpile.js",
+    "build-node": "babel ./src --out-dir ./dist/cjs",
+    "prepublish": "npm run build"
+  },
+  "author": "m-a-r-c-e-l-i-n-o <me@marceli.no>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "ethical-utility-babel-directory-transpiler": "0.0.0",
+    "nutra": "0.0.13",
+    "nutra-jasmine-coverage-babel-preset": "0.0.8"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "ethical-utility-resolve-module": "0.0.0"
+  }
+}
