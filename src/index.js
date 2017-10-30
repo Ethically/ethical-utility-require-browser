@@ -1,3 +1,4 @@
+import extend from 'object-extend'
 import * as Module from './module.js'
 
 const evalModules = (modules) => {
@@ -19,6 +20,8 @@ const enableBrowserRequire = (modules) => {
     require.defined = {}
     require.ids = []
     require.alias = {}
+    require.browserMap = {}
+    require.conflictMap = {}
     require.define = (module, fn) => require.defined[module] = fn
     require.defineSource = (key, source) => {
         const wrappedModule = eval(
@@ -31,7 +34,11 @@ const enableBrowserRequire = (modules) => {
     require.load = (url) => (
         window.fetch(url)
         .then(response => response.json())
-        .then(evalModules)
+        .then(({ browserMap, conflictMap, modules }) => {
+            require.browserMap = extend(require.browserMap, browserMap)
+            require.conflictMap = extend(require.conflictMap, conflictMap)
+            evalModules(modules)
+        })
         .catch(e => console.error(e))
     )
 

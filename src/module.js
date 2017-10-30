@@ -7,12 +7,16 @@ import {
 } from 'ethical-utility-resolve-module'
 
 const cache = {}
-const load = (request, parent) => {
-    const key = resolveFilename(request, parent)
+const load = (request, parent = getAppPrefix()) => {
+    const require = window.require
+    const mapID = getModuleRoot(parent)
+    const remapped = requestMap(require.browserMap, request, mapID)
+    const conflicted = requestMap(require.conflictMap, remapped, mapID)
+    const key = resolveFilename(conflicted, parent)
 
     if (cache[key]) return cache[key].exports
 
-    const definedModule = window.require.defined[key]
+    const definedModule = require.defined[key]
     if (!definedModule) {
         const error = new Error(`Cannot find module "${key}" from "${parent}"`)
         error.code = 'MODULE_NOT_FOUND'
@@ -24,12 +28,25 @@ const load = (request, parent) => {
     definedModule.call(module.exports, module.exports, localRequire, module)
     return module.exports
 }
+const requestMap = (map, request, id) => {
+    const mapped = map[id] && map[id][request]
+    return mapped || request
+}
+const getModuleRoot = (path) => {
+    const nodeModules = 'node_modules'
+    const parts = path.split('/')
+    const index = parts.lastIndexOf(nodeModules)
+    if (index === -1) {
+        return parts[0]
+    }
+    return parts.slice(0, index + 2).join('/')
+}
 const resolveFilename = (key, parent) => {
     if (isAbsolutePackage(key)) return key
     //
     //
     //
-    // TEST THIS
+    // TODO: Test this.
     //
     //
     //

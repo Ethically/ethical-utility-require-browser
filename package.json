@@ -1,6 +1,6 @@
 {
   "name": "ethical-utility-require-browser",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "CommonJS browser module system for the Ethical framework.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -10,6 +10,10 @@
     "build": "npm run build-node && node transpile.js",
     "build-node": "babel ./src --out-dir ./dist/cjs",
     "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ethically/ethical-utility-require-browser.git"
   },
   "author": "m-a-r-c-e-l-i-n-o <me@marceli.no>",
   "license": "ISC",
@@ -23,6 +27,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "ethical-utility-resolve-module": "0.0.0"
+    "ethical-utility-resolve-module": "0.0.1",
+    "object-extend": "^0.5.0"
   }
 }
